@@ -5,13 +5,42 @@ const mongoose = require("mongoose");
 
 router.get("/get", async (req, res) => {
   const id = req.query.id;
+  if (id) {
+    try {
+      const request = await requestModel.findById(id);
+      const headers = await headerModel.findOne({ requestId: id });
+      return res.json({ status: true, data: { headers, request } });
+    } catch (error) {
+      console.log("error...", error);
+      return res.json({
+        status: false,
+        data: { headers: null, request: null },
+      });
+    }
+  }
   try {
-    const request = await requestModel.findById(id);
-    const headers = await headerModel.findOne({ requestId: id });
-    return res.json({ status: true, data: { headers, request } });
+    const allRequests = await requestModel.find({});
+    const headers = await Promise.allSettled(
+      allRequests.map((request) => {
+        return headerModel.findOne({ requestId: request._doc._id });
+      })
+    );
+    const finalResult = allRequests.map((request) => {
+      const correctHeaders = headers.filter((header) => {
+        return `${header.value.requestId}` === `${request._doc._id}`;
+      });
+      return {
+        ...request._doc,
+        headers: correctHeaders[0].value.headers,
+      };
+    });
+    return res.json({ status: true, data: finalResult });
   } catch (error) {
     console.log("error...", error);
-    return res.json({ status: false, data: { headers: null, request: null } });
+    return res.json({
+      status: false,
+      data: { headers: null, request: null },
+    });
   }
 });
 
