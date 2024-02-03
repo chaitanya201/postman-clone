@@ -111,13 +111,40 @@ router.delete("/delete", async (req, res) => {
   try {
     const body = req.body;
     const session = await mongoose.startSession();
+
     const sessionResult = await session.withTransaction(async () => {
-      const request = await requestModel.deleteOne({ _id: body._id });
-      const headers = await headerModel.deleteOne({ requestId: body._id });
+      const request = await requestModel.deleteOne(
+        {
+          _id: body._id,
+        },
+        { session }
+      );
+
+      if (request.deletedCount === 0 && request.acknowledged) {
+        return session.abortTransaction();
+      }
+
+      const headers = await headerModel.deleteOne(
+        {
+          requestId: "65bc56ce0b5d1bfff2588834",
+        },
+        { session }
+      );
+
+      if (headers.deletedCount === 0 && headers.acknowledged) {
+        return session.abortTransaction();
+      }
+
       return { headers, request };
     });
 
     await session.endSession();
+    if (!sessionResult) {
+      return res.json({
+        status: false,
+        data: null,
+      });
+    }
     return res.json({
       status: true,
       data: sessionResult,
