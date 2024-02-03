@@ -1,16 +1,39 @@
+import { useState } from "react";
+
 export default function ShowResponse({ response }) {
+  const [selectedOption, setSelectedOption] = useState("data");
   return response && response.data ? (
     <div>
       <ul>
-        <li>Data</li>
-        <li>Headers</li>
-        <li>Cookies</li>
+        <button
+          onClick={() => {
+            setSelectedOption("data");
+          }}
+        >
+          Data
+        </button>
+        <button
+          onClick={() => {
+            setSelectedOption("headers");
+          }}
+        >
+          Headers
+        </button>
+        <button
+          onClick={() => {
+            setSelectedOption("cookies");
+          }}
+        >
+          Cookies
+        </button>
       </ul>
-      <ul>
-        <li>{JSON.stringify(response.data)}</li>
-        <li>{JSON.stringify(response.headers)}</li>
-        <li>Add cookies</li>
-      </ul>
+      {selectedOption === "data" && (
+        <div>{JSON.stringify(response.data, null, 2)}</div>
+      )}
+      {selectedOption === "headers" && (
+        <div>{JSON.stringify(response.headers, null, 2)}</div>
+      )}
+      {selectedOption === "cookies" && <div>Add cookies</div>}
     </div>
   ) : (
     <div>No data</div>
