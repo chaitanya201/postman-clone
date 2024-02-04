@@ -2,7 +2,7 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import { BASE_URL } from "../utils";
 
-export default function ShowAllRequests({}) {
+export default function ShowAllRequests() {
   const [allRequests, setAllRequests] = useState([]);
   const [singleRequestData, setSingleRequestData] = useState(null);
   useEffect(() => {
@@ -35,6 +35,7 @@ export default function ShowAllRequests({}) {
       console.log("error ", error);
     }
   };
+  console.log("single", singleRequestData);
   return (
     <div>
       <div>
@@ -63,7 +64,7 @@ export default function ShowAllRequests({}) {
             <div>
               <h3>Headers</h3>
               <div>
-                {singleRequestData.headers.headers.map((header) => {
+                {singleRequestData.headers.map((header) => {
                   return (
                     <div key={header._id}>
                       <div>{header.key}</div>
@@ -74,10 +75,10 @@ export default function ShowAllRequests({}) {
               </div>
             </div>
             {/* Do same for params */}
-            {/* <div>
+            <div>
               <h3>Params</h3>
               <div>
-                {singleRequestData.params.params.map((header) => {
+                {singleRequestData.params.map((header) => {
                   return (
                     <div key={header._id}>
                       <div>{header.key}</div>
@@ -86,22 +87,19 @@ export default function ShowAllRequests({}) {
                   );
                 })}
               </div>
-            </div> */}
+            </div>
 
             {/* Body code */}
-            {/* <div>
-              <h3>Headers</h3>
+            <div>
+              <h3>Body</h3>
               <div>
-                {singleRequestData.headers.headers.map((header) => {
-                  return (
-                    <div key={header._id}>
-                      <div>{header.key}</div>
-                      <div>{header.value}</div>
-                    </div>
-                  );
-                })}
+                {singleRequestData.body ? (
+                  JSON.stringify(singleRequestData.body || null, null, 2)
+                ) : (
+                  <div>No data in body </div>
+                )}
               </div>
-            </div> */}
+            </div>
           </div>
         )}
       </div>

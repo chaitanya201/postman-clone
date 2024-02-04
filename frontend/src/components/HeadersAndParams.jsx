@@ -38,6 +38,7 @@ export default function HeadersAndParams({
             handleKeyChange={handleKeyChange}
             handleValueChange={handleValueChange}
             index={index}
+            defaultValue={item}
           />
         );
       })}

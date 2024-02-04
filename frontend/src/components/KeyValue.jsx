@@ -5,6 +5,7 @@ export default function KeyValue({
   handleDelete,
   handleKeyChange,
   handleValueChange,
+  defaultValue,
 }) {
   return (
     <div>
@@ -12,6 +13,7 @@ export default function KeyValue({
         <input
           type="text"
           placeholder="key"
+          value={defaultValue.key}
           onChange={(e) => {
             handleKeyChange(e.target.value, index);
           }}
@@ -21,6 +23,7 @@ export default function KeyValue({
         <input
           type="text"
           placeholder="value"
+          value={defaultValue.value}
           onChange={(e) => {
             handleValueChange(e.target.value, index);
           }}
