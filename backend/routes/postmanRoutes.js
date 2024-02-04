@@ -1,5 +1,7 @@
 const router = require("express").Router();
+const bodyModel = require("../db/schemas/body");
 const headerModel = require("../db/schemas/headers");
+const paramsModel = require("../db/schemas/params");
 const requestModel = require("../db/schemas/request");
 const mongoose = require("mongoose");
 
@@ -8,30 +10,130 @@ router.get("/get", async (req, res) => {
   if (id) {
     try {
       const request = await requestModel.findById(id);
-      const headers = await headerModel.findOne({ requestId: id });
-      return res.json({ status: true, data: { headers, request } });
+      if (!request) {
+        return res.json({ status: false, data: null, msg: "No request found" });
+      }
+      const headers = await Promise.allSettled([
+        headerModel.findOne({ requestId: request._id }),
+        paramsModel.findOne({ requestId: request._id }),
+        bodyModel.findOne({ requestId: request._id }),
+      ]);
+      const correctHeaders = headers
+        .filter((item) => {
+          if (
+            item.value?.headers !== undefined &&
+            `${item.value.requestId}` === `${request._id}`
+          ) {
+            return true;
+          }
+          return false;
+        })
+        .map((item) => {
+          return { headers: item.value._doc.headers };
+        });
+      const correctParams = headers
+        .filter((item) => {
+          if (
+            item.value?.params !== undefined &&
+            `${item.value.requestId}` === `${request._id}`
+          ) {
+            return true;
+          }
+          return false;
+        })
+        .map((item) => {
+          return { params: item.value._doc.params };
+        });
+      const correctBody = headers
+        .filter((item) => {
+          if (
+            item.value?.body !== undefined &&
+            `${item.value.requestId}` === `${request._id}`
+          ) {
+            return true;
+          }
+          return false;
+        })
+        .map((item) => {
+          return { body: item.value._doc.body };
+        });
+
+      return res.json({
+        status: true,
+        data: {
+          headers: correctHeaders[0]?.headers || [],
+          params: correctParams[0]?.params || [],
+          body: JSON.parse(correctBody[0]?.body || null) || null,
+          request: request._doc,
+        },
+      });
     } catch (error) {
       console.log("error...", error);
       return res.json({
         status: false,
-        data: { headers: null, request: null },
+        data: null,
       });
     }
   }
   try {
     const allRequests = await requestModel.find({});
-    const headers = await Promise.allSettled(
-      allRequests.map((request) => {
+    const headers = await Promise.allSettled([
+      ...allRequests.map((request) => {
         return headerModel.findOne({ requestId: request._doc._id });
-      })
-    );
+      }),
+      ...allRequests.map((request) => {
+        return paramsModel.findOne({ requestId: request._doc._id });
+      }),
+      ...allRequests.map((request) => {
+        return bodyModel.findOne({ requestId: request._doc._id });
+      }),
+    ]);
     const finalResult = allRequests.map((request) => {
-      const correctHeaders = headers.filter((header) => {
-        return `${header.value.requestId}` === `${request._doc._id}`;
-      });
+      const correctHeaders = headers
+        .filter((item) => {
+          if (
+            item.value?.headers !== undefined &&
+            `${item.value.requestId}` === `${request._doc._id}`
+          ) {
+            return true;
+          }
+          return false;
+        })
+        .map((item) => {
+          return { headers: item.value._doc.headers };
+        });
+      const correctParams = headers
+        .filter((item) => {
+          if (
+            item.value?.params !== undefined &&
+            `${item.value.requestId}` === `${request._doc._id}`
+          ) {
+            return true;
+          }
+          return false;
+        })
+        .map((item) => {
+          return { params: item.value._doc.params };
+        });
+      const correctBody = headers
+        .filter((item) => {
+          if (
+            item.value?.body !== undefined &&
+            `${item.value.requestId}` === `${request._doc._id}`
+          ) {
+            return true;
+          }
+          return false;
+        })
+        .map((item) => {
+          return { body: item.value._doc.body };
+        });
+
       return {
         ...request._doc,
-        headers: correctHeaders[0].value.headers,
+        headers: correctHeaders[0]?.headers || [],
+        params: correctParams[0]?.params || [],
+        body: JSON.parse(correctBody[0]?.body || null) || null,
       };
     });
     return res.json({ status: true, data: finalResult });
@@ -47,22 +149,136 @@ router.get("/get", async (req, res) => {
 router.post("/add", async (req, res) => {
   try {
     const body = req.body;
+
     const session = await mongoose.startSession();
-    const sessionResult = await session.withTransaction(async () => {
-      const request = await requestModel.create({
-        title: body.title,
-        description: body.description,
-        url: body.url,
-        method: body.method,
-      });
-      const headers = await headerModel.create({
-        requestId: request._id,
-        headers: body.headers,
-      });
-      return { headers, request };
-    });
+    const sessionResult = await session.withTransaction(
+      async () => {
+        console.log(
+          JSON.stringify({
+            title: body.title,
+            description: body.description,
+            url: body.url,
+            method: body.method,
+          })
+        );
+        const request = await requestModel.create(
+          [
+            {
+              title: body.title,
+              description: body.description,
+              url: body.url,
+              method: body.method,
+            },
+          ],
+          { session }
+        );
+        if (!request[0]) {
+          session.abortTransaction();
+          return;
+        }
+        let finalData = [];
+        if (body.headers.length > 0) {
+          finalData.push(
+            headerModel.create(
+              [
+                {
+                  requestId: request[0]._id,
+                  headers: body.headers,
+                },
+              ],
+              { session }
+            )
+          );
+        }
+        if (body.params.length > 0) {
+          finalData.push(
+            paramsModel.create(
+              [
+                {
+                  requestId: request[0]._id,
+                  params: body.params,
+                },
+              ],
+              { session }
+            )
+          );
+        }
+        if (body?.body?.length > 0) {
+          finalData.push(
+            bodyModel.create(
+              [
+                {
+                  requestId: request[0]._id,
+                  body: body.body,
+                },
+              ],
+              { session }
+            )
+          );
+        }
+
+        // const addData = await Promise.allSettled([
+        //   headerModel.create(
+        //     {
+        //       requestId: request._id,
+        //       headers: body.headers,
+        //     },
+        //     { session }
+        //   ),
+        //   paramsModel.create(
+        //     {
+        //       requestId: request._id,
+        //       params: body.params,
+        //     },
+        //     { session }
+        //   ),
+        //   bodyModel.create(
+        //     {
+        //       requestId: request._id,
+        //       body: body.body,
+        //     },
+        //     { session }
+        //   ),
+        // ]);
+        const addData = await Promise.allSettled(finalData);
+        for (let index = 0; index < addData.length; index++) {
+          const element = addData[index];
+          console.log("element", JSON.stringify(element));
+          if (element.status !== "fulfilled" || !element.value) {
+            session.abortTransaction();
+            return null;
+          }
+        }
+        // const headers = await headerModel.create({
+        //   requestId: request._id,
+        //   headers: body.headers,
+        // },{session});
+        // const params = await paramsModel.create({
+        //   requestId: request._id,
+        //   params: body.params,
+        // },{session});
+        // const bodyRes = await bodyModel.create({
+        //   requestId: request._id,
+        //   body: body.params,
+        // },{session});
+
+        return {
+          request: request[0],
+          headers: addData?.[0]?.value || null,
+          params: addData?.[1]?.value || null,
+          body: addData?.[2]?.value?.[0] || null,
+        };
+      },
+      { session }
+    );
 
     await session.endSession();
+    if (!sessionResult) {
+      return res.json({
+        status: false,
+        data: null,
+      });
+    }
     return res.json({
       status: true,
       data: sessionResult,
