@@ -5,16 +5,16 @@ import { BASE_URL } from "../utils";
 export default function ShowAllRequests() {
   const [allRequests, setAllRequests] = useState([]);
   const [singleRequestData, setSingleRequestData] = useState(null);
+  const fetchData = async () => {
+    try {
+      const res = await axios.get(`${BASE_URL}/get`);
+      setAllRequests(res.data.data);
+    } catch (error) {
+      console.log("error", error);
+      setAllRequests([]);
+    }
+  };
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const res = await axios.get(`${BASE_URL}/get`);
-        setAllRequests(res.data.data);
-      } catch (error) {
-        console.log("error", error);
-        setAllRequests([]);
-      }
-    };
     fetchData();
   }, []);
 
@@ -35,22 +35,58 @@ export default function ShowAllRequests() {
       console.log("error ", error);
     }
   };
-  console.log("single", singleRequestData);
+
+  const handleEdit = async (data) => {
+    console.log("data ", data);
+    try {
+      const res = await axios.post(`${BASE_URL}/update`, data);
+      console.log("res ", res);
+    } catch (error) {
+      console.log("error ", error);
+    }
+  };
+  const handleDelete = async (id) => {
+    console.log("data ", id);
+    try {
+      const res = await axios.delete(`${BASE_URL}/delete?_id=${id}`);
+      if (res.data.status) {
+        fetchData();
+        return;
+      }
+    } catch (error) {
+      console.log("error ", error);
+    }
+  };
   return (
     <div>
       <div>
         {allRequests.map((req) => {
           return (
-            <button
-              key={req._id}
-              onClick={() => {
-                handleClick(req._id);
-              }}
-            >
-              {req.title.length > 16
-                ? req.title.slice(0, 16) + ".."
-                : req.title}
-            </button>
+            <div key={req._id}>
+              <button
+                onClick={() => {
+                  handleClick(req._id);
+                }}
+              >
+                {req.title.length > 16
+                  ? req.title.slice(0, 16) + ".."
+                  : req.title}
+              </button>
+              <button
+                onClick={() => {
+                  handleEdit(req);
+                }}
+              >
+                Edit
+              </button>
+              <button
+                onClick={() => {
+                  handleDelete(req._id);
+                }}
+              >
+                Delete
+              </button>
+            </div>
           );
         })}
       </div>
