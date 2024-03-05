@@ -1,7 +1,7 @@
 import axios from "axios";
+import "../CSS/ShowRequests.css";
 import { useEffect, useState } from "react";
 import { BASE_URL } from "../utils";
-
 export default function ShowAllRequests() {
   const [allRequests, setAllRequests] = useState([]);
   const [singleRequestData, setSingleRequestData] = useState(null);
@@ -11,7 +11,7 @@ export default function ShowAllRequests() {
         const res = await axios.get(`${BASE_URL}/get`);
         setAllRequests(res.data.data);
       } catch (error) {
-        console.log("error", error);
+        console.log("error======>", error);
         setAllRequests([]);
       }
     };
@@ -61,45 +61,49 @@ export default function ShowAllRequests() {
           <div>
             <div>{singleRequestData.request.method}</div>
             <div>{singleRequestData.request.url}</div>
-            <div>
-              <h3>Headers</h3>
-              <div>
-                {singleRequestData.headers.map((header) => {
-                  return (
-                    <div key={header._id}>
-                      <div>{header.key}</div>
-                      <div>{header.value}</div>
-                    </div>
-                  );
-                })}
+            {/*  */}
+            <div className="options">
+              <div className="HeadersP">
+                <h3 className="Headers">Headers</h3>
+                <div className="opt">
+                  {singleRequestData.headers.map((header) => {
+                    return (
+                      <div key={header._id}>
+                        <div>{header.key}</div>
+                        <div>{header.value}</div>
+                      </div>
+                    );
+                  })}
+                </div>
               </div>
-            </div>
-            {/* Do same for params */}
-            <div>
-              <h3>Params</h3>
+              {/* Do same for params */}
               <div>
-                {singleRequestData.params.map((header) => {
-                  return (
-                    <div key={header._id}>
-                      <div>{header.key}</div>
-                      <div>{header.value}</div>
-                    </div>
-                  );
-                })}
+                <h3>Params</h3>
+                <div className="opt">
+                  {singleRequestData.params.map((header) => {
+                    return (
+                      <div key={header._id}>
+                        <div>{header.key}</div>
+                        <div>{header.value}</div>
+                      </div>
+                    );
+                  })}
+                </div>
               </div>
-            </div>
 
-            {/* Body code */}
-            <div>
-              <h3>Body</h3>
-              <div>
-                {singleRequestData.body ? (
-                  JSON.stringify(singleRequestData.body || null, null, 2)
-                ) : (
-                  <div>No data in body </div>
-                )}
+              {/* Body code */}
+              <div className="bodyData">
+                <h3 className="Body">Body</h3>
+                <div className="opt">
+                  {singleRequestData.body ? (
+                    JSON.stringify(singleRequestData.body || null, null, 2)
+                  ) : (
+                    <div>No data in body </div>
+                  )}
+                </div>
               </div>
             </div>
+            {/*  */}
           </div>
         )}
       </div>

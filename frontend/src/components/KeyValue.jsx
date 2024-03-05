@@ -1,5 +1,5 @@
 import React from "react";
-
+import "../CSS/KeyValue.css";
 export default function KeyValue({
   index,
   handleDelete,
@@ -8,7 +8,7 @@ export default function KeyValue({
   defaultValue,
 }) {
   return (
-    <div>
+    <div className="keyVal">
       <div>
         <input
           type="text"

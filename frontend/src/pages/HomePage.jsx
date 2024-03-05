@@ -2,10 +2,12 @@ import { useState } from "react";
 import ReqUrl from "../components/ReqUrl";
 import axios from "axios";
 import ShowResponse from "../components/ShowResponse";
-import HeadersAndParams from "../components/HeadersAndParams";
 import Body from "../components/Body";
 import { BASE_URL, safeParse } from "../utils";
 import { Link } from "react-router-dom";
+import HeadersAndParams from "../components/HeadersAndParams";
+import "../CSS/HomePage.css";
+import AddReq from "../components/AddReq";
 export default function HomePage() {
   const [selected, setSelected] = useState({
     method: "get",
@@ -42,6 +44,7 @@ export default function HomePage() {
           paramsObj = { ...paramsObj, [item.key.trim()]: item.value };
         }
       });
+      console.log("before  apiRes......... ");
       const apiRes = await axios({
         method: selected.method,
         url: selected.url,
@@ -49,9 +52,10 @@ export default function HomePage() {
         params: paramsObj,
         data: safeParse(selected.body),
       });
+      console.log("API Res-------------->", apiRes);
       setResponse(apiRes);
     } catch (error) {
-      console.log("error", error);
+      console.log("error--------->", error);
       setResponse(error);
     }
   };
@@ -68,61 +72,83 @@ export default function HomePage() {
   };
 
   return (
-    <div>
-      <div>
-        <Link to={"/view-reqs"}>Show Requests</Link>
+    <div className="allElements">
+      <div className="saveShow">
+        {/* <div className="ShowRequests">
+          <Link to={"/view-reqs"}>Show Requests</Link>
+        </div> */}
+        <div className="save">
+          <button onClick={handleSaveReq}>Save Request</button>
+        </div>
+        {/* <div>
+          <AddReq />
+        </div> */}
       </div>
-      <div>
-        <button onClick={handleSaveReq}>Save Request</button>
+      <div className="middlePart">
+        {/* <form> */}
+        {/* / */}
+        <div className="titDesc">
+          <div className="title">
+            <input
+              type="text"
+              value={selected.title}
+              placeholder="Title"
+              onChange={(e) => {
+                selected.title = e.target.value;
+                setSelected({ ...selected });
+              }}
+            />
+          </div>
+          {/*  */}
+          {/*  */}
+          <div className="description">
+            <input
+              type="text"
+              value={selected.description}
+              placeholder="description"
+              onChange={(e) => {
+                selected.description = e.target.value;
+                setSelected({ ...selected });
+              }}
+            />
+          </div>
+        </div>
+        {/*  */}
+        {/*  */}
+        <div className="ReqUrl">
+          <ReqUrl
+            selected={selected}
+            setSelected={setSelected}
+            handleSendApi={handleSendApi}
+          />
+        </div>
+        {/*  */}
+        {/* / */}
+        {/* </form> */}
+        <div className="listItems">
+          <ul>
+            {Object.keys(OPTIONS).map((option) => {
+              return (
+                <li key={option}>
+                  <button
+                    className="headers"
+                    onClick={() => {
+                      setCurrentSelectedOption({
+                        option,
+                        component: OPTIONS[option],
+                      });
+                    }}
+                  >
+                    {option}
+                  </button>
+                </li>
+              );
+            })}
+          </ul>
+        </div>
       </div>
-      <div>
-        <input
-          type="text"
-          value={selected.title}
-          placeholder="Title"
-          onChange={(e) => {
-            selected.title = e.target.value;
-            setSelected({ ...selected });
-          }}
-        />
-      </div>
-      <div>
-        <input
-          type="text"
-          value={selected.description}
-          placeholder="description"
-          onChange={(e) => {
-            selected.description = e.target.value;
-            setSelected({ ...selected });
-          }}
-        />
-      </div>
-      <div>
-        <ReqUrl
-          selected={selected}
-          setSelected={setSelected}
-          handleSendApi={handleSendApi}
-        />
-      </div>
-      <ul>
-        {Object.keys(OPTIONS).map((option) => {
-          return (
-            <li key={option}>
-              <button
-                onClick={() => {
-                  setCurrentSelectedOption({
-                    option,
-                    component: OPTIONS[option],
-                  });
-                }}
-              >
-                {option}
-              </button>
-            </li>
-          );
-        })}
-      </ul>
-      <div>
+      {/* flex end */}
+      <div className="option">
         <currentSelectedOption.component
           key={currentSelectedOption.option}
           selected={selected}

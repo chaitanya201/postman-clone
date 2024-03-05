@@ -1,5 +1,5 @@
 import KeyValue from "./KeyValue";
-
+import "../CSS/HeadersAndParams.css";
 export default function HeadersAndParams({
   type = "headers",
   selected,
@@ -26,9 +26,11 @@ export default function HeadersAndParams({
 
   return (
     <div>
-      <h3>{type}</h3>
-      <div>
-        <button onClick={handleAdd}>Add</button>
+      <h3 className="type">{type}</h3>
+      <div className="AddParent">
+        <button className="Add" onClick={handleAdd}>
+          Add
+        </button>
       </div>
       {selected[type].map((item, index) => {
         return (

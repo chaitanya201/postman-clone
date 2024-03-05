@@ -1,7 +1,9 @@
+// import "../CSS/HomePage.css";
+import "../CSS/ReqUrl.css";
 export default function ReqUrl({ selected, setSelected, handleSendApi }) {
   return (
-    <div>
-      <div>
+    <div className="reqData">
+      <div className="options">
         <select
           defaultValue={selected.method}
           onChange={(e) => {
@@ -9,13 +11,21 @@ export default function ReqUrl({ selected, setSelected, handleSendApi }) {
             setSelected({ ...selected });
           }}
         >
-          <option value="get">GET</option>
-          <option value="post">POST</option>
-          <option value="delete">DELETE</option>
+          <option className="get" value="get">
+            GET
+          </option>
+          <option className="post" value="post">
+            POST
+          </option>
+          <option className="delete" value="delete">
+            DELETE
+          </option>
         </select>
       </div>
       <div>
         <input
+          className="url"
+          placeholder="enter url "
           type="text"
           value={selected.url}
           onChange={(e) => {
@@ -25,7 +35,9 @@ export default function ReqUrl({ selected, setSelected, handleSendApi }) {
         />
       </div>
       <div>
-        <button onClick={handleSendApi}>Send</button>
+        <button className="Send" onClick={handleSendApi}>
+          Send ▶
+        </button>
       </div>
     </div>
   );

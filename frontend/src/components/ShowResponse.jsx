@@ -1,10 +1,10 @@
 import { useState } from "react";
-
+import "../CSS/ShowResponse.css";
 export default function ShowResponse({ response }) {
   const [selectedOption, setSelectedOption] = useState("data");
   return response && response.data ? (
     <div>
-      <ul>
+      <ul className="list">
         <button
           onClick={() => {
             setSelectedOption("data");
@@ -36,6 +36,6 @@ export default function ShowResponse({ response }) {
       {selectedOption === "cookies" && <div>Add cookies</div>}
     </div>
   ) : (
-    <div>No data</div>
+    <div className="noData">No data</div>
   );
 }
