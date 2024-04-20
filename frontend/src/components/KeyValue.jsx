@@ -1,5 +1,6 @@
 import React from "react";
 import "../CSS/KeyValue.css";
+import DeleteIm from "../Images/Delete.jpg";
 export default function KeyValue({
   index,
   handleDelete,
@@ -35,6 +36,7 @@ export default function KeyValue({
         }}
       >
         Delete
+        {/* <img src={DeleteIm} alt="delete"></img> */}
       </button>
     </div>
   );

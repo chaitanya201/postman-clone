@@ -2,7 +2,8 @@ import { useState } from "react";
 import Modal from "react-modal";
 import "../CSS/AddReq.css";
 import HomePage from "../pages/HomePage";
-import { Link } from "react-router-dom";
+// import { Link } from "react-router-dom";
+
 export default function AddReq() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [inputValue, setInputValue] = useState("");
@@ -19,12 +20,9 @@ export default function AddReq() {
   return (
     <div>
       <div className="buttons">
-        <button className="AddReq" onClick={handleAddReq}>
+        <button className="btn btn-primary  AddReq" onClick={handleAddReq}>
           AddReq
         </button>
-        <div className="ShowRequests">
-          <Link to={"/view-reqs"}>Show Requests</Link>
-        </div>
       </div>
       {/* <div className="modal"> */}
       <Modal

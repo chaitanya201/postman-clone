@@ -6,11 +6,12 @@
   /* height: 70%; */
   padding-top: 20px;
   border-radius: 10px;
-  background-color: gray ;
+  background-color: rgb(154, 21, 81);
   animation: slideLeft 3s ease forwards;
   margin-left: 10px;
   margin-top: 10px;
   height: 100%;
+  overflow-y: auto;
 }
  @keyframes slideLeft{
   0%{
@@ -31,8 +32,8 @@
   /* position: top; */
   display: flex;
   align-items: center;
-  background-color: grey;
-  justify-content: space-between;
+  justify-content:end;
+  margin-right: -10px;
 }
 .title1{
     color: black;
@@ -45,7 +46,7 @@
     /* width: 400px; */
     background-color: #e8e7e7;
     /* background-color: #fff; */
-    box-shadow: 3px 3px 4px pink;
+    /* box-shadow: 3px 3px 4px pink; */
 }
 .inputData{
     display: flex;
@@ -80,3 +81,10 @@
   
    
    */
+   .AddReq{
+    margin-top: -10px;
+    margin-right: 10px;
+    /* margin-bottom: 90px; */
+    /* background-color: pink; */
+    /* align-self: center; */
+   }

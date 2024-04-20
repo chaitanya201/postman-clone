@@ -3,7 +3,7 @@ import "../CSS/ReqUrl.css";
 export default function ReqUrl({ selected, setSelected, handleSendApi }) {
   return (
     <div className="reqData">
-      <div className="options">
+      <div>
         <select
           defaultValue={selected.method}
           onChange={(e) => {

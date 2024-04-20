@@ -74,8 +74,8 @@ ul{
     }
      
 }
-option{
-    margin: 10px;
-    /* padding: 10px; */
-    /* height: ; */
+
+select {
+    cursor: pointer;
+  
 }

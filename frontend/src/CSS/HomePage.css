@@ -1,28 +1,29 @@
- 
-/* .headers{
-    color: black;
-} */
+
 .titDesc{
     display: flex;
-    background-color: green;
+    /* background-color: green; */
     justify-content: space-around;
     padding: 7px;
 }
 .saveShow{
     margin-top: -140px;
     display: flex;
-    background-color: pink;
-    justify-content: space-between;
+    /* background-color: pink; */
+    justify-content: end;
     padding: 7px;
 }
 .save{
     background-color: none;
-    
 }
 .save:hover {
     border: #535bf2;
     color: #535bf2;
+    
   }
+
+.saveReqBtn {
+    background-color: green;
+}
   
 .ShowRequests:hover,.save:hover{
     transform: scale(1.1);
@@ -45,9 +46,14 @@ height: 100%;
 /* width: 100%; */
 /* background-color: purple; */
 }
-/* .title{
-    width: 40%;
-} */
+input{
+ font-size: large;
+ border-radius: 15px;
+ border-color: rgba(0, 0, 0, 0.263);
+ text-transform: uppercase;
+ padding-left: 15px;
+
+}
 ul{
         display:grid;
         grid-template-columns: repeat(3,1fr);
@@ -57,7 +63,7 @@ ul{
         height: 30px;
         padding-bottom: 10px;
         place-content: center;
-        background-color: yellowgreen;
+        /* background-color: yellowgreen; */
 }
 /* .listItems{
 
@@ -103,6 +109,13 @@ ul{
 }
 .option{
     color: black;
+    text-transform: capitalize;
+}
+
+.selectedHeader {
+    text-transform: uppercase;
+    background-color: white;
+    color: black;
 }
 @media (max-width:726px){
      
@@ -123,4 +136,12 @@ ul{
         padding-top: 15px;
         /* color: black; */
     }
+}
+
+
+.headers {
+    text-transform: uppercase;
+}
+.middlePart{
+    background-color:rgb(154, 21, 81) ;
 }

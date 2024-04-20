@@ -8,12 +8,15 @@ import { Link } from "react-router-dom";
 import HeadersAndParams from "../components/HeadersAndParams";
 import "../CSS/HomePage.css";
 import AddReq from "../components/AddReq";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+
 export default function HomePage() {
   const [selected, setSelected] = useState({
     method: "get",
     url: "",
-    headers: [{ key: "", value: "" }],
-    params: [{ key: "", value: "" }],
+    headers: [],
+    params: [],
     body: "",
     title: "",
     description: "",
@@ -53,9 +56,11 @@ export default function HomePage() {
         data: safeParse(selected.body),
       });
       console.log("API Res-------------->", apiRes);
+      toast.success("Request Sent Successfully.");
       setResponse(apiRes);
     } catch (error) {
       console.log("error--------->", error);
+      toast.error(error.message || "Something went wrong.");
       setResponse(error);
     }
   };
@@ -64,21 +69,30 @@ export default function HomePage() {
     try {
       const res = await axios.post(`${BASE_URL}/add`, { ...selected });
       if (!res.data.status) {
-        console.log("error in data saving...");
+        toast.error("Something went wrong..");
+        setResponse([]);
+        return;
       }
+      toast("Request added!!", { type: "success" });
+      window.location.reload();
     } catch (error) {
       console.log("err..", error);
+      toast.error("Something went wrong..");
     }
   };
 
   return (
     <div className="allElements">
+      <ToastContainer />
+
       <div className="saveShow">
         {/* <div className="ShowRequests">
           <Link to={"/view-reqs"}>Show Requests</Link>
         </div> */}
         <div className="save">
-          <button onClick={handleSaveReq}>Save Request</button>
+          <button className="saveReqBtn" onClick={handleSaveReq}>
+            Save Request
+          </button>
         </div>
         {/* <div>
           <AddReq />
@@ -88,7 +102,7 @@ export default function HomePage() {
         {/* <form> */}
         {/* / */}
         <div className="titDesc">
-          <div className="title">
+          <div>
             <input
               type="text"
               value={selected.title}
@@ -131,7 +145,11 @@ export default function HomePage() {
               return (
                 <li key={option}>
                   <button
-                    className="headers"
+                    className={
+                      currentSelectedOption.option === option
+                        ? "selectedHeader"
+                        : "headers"
+                    }
                     onClick={() => {
                       setCurrentSelectedOption({
                         option,
