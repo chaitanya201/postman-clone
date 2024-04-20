@@ -74,132 +74,235 @@ export default function ShowAllRequests() {
   return (
     <div>
       <AddReq />
-      <div>
-        {allRequests.map((req) => {
-          return (
-            <div>
-              <div className="titEditDel" key={req._id}>
-                <button
-                  className="title"
-                  onClick={() => {
-                    handleClick(req._id);
-                  }}
-                >
-                  {req.title.length > 16
-                    ? req.title.slice(0, 16) + ".."
-                    : req.title}
-                </button>
-                <button
-                  className="edit"
-                  onClick={() => {
-                    handleEdit(req);
-                  }}
-                >
-                  Edit
-                </button>
+      <div
+        style={{
+          display: "flex",
+          gap: "30px",
+        }}
+      >
+        <div>
+          {allRequests.map((req) => {
+            return (
+              <div key={req._id}>
+                <div className="titEditDel">
+                  <button
+                    className="title"
+                    onClick={() => {
+                      handleClick(req._id);
+                    }}
+                  >
+                    {req.title.length > 16
+                      ? req.title.slice(0, 16) + ".."
+                      : req.title}
+                  </button>
+                  <button
+                    className="edit"
+                    onClick={() => {
+                      handleEdit(req);
+                    }}
+                  >
+                    Edit
+                  </button>
 
-                <button
-                  className="deleteB"
-                  onClick={() => {
-                    handleDelete(req._id);
-                  }}
-                >
-                  {/* Delete */}
-                  {/* <img src={Delete} alt="delete"></img> */}
-                  <img className="delete" src={DeleteImage} alt="Delete" />
-                </button>
+                  <button
+                    className="deleteB"
+                    onClick={() => {
+                      handleDelete(req._id);
+                    }}
+                  >
+                    {/* Delete */}
+                    {/* <img src={Delete} alt="delete"></img> */}
+                    <img className="delete" src={DeleteImage} alt="Delete" />
+                  </button>
 
-                {/* <AddReq /> */}
+                  {/* <AddReq /> */}
+                </div>
               </div>
+            );
+          })}
+        </div>
+        <div className="reqData">
+          {!singleRequestData ? (
+            <div
+              style={{
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+                height: "100%",
+                fontWeight: "bold",
+                fontSize: "30px",
+              }}
+            >
+              No Data Found.
             </div>
-          );
-        })}
-      </div>
-      <div>
-        {!singleRequestData ? (
-          <div>No Data Found.</div>
-        ) : (
-          <div className="reqData">
-            <table className="table2">
-              <tr>
-                <th>
-                  <h3>
-                    <div>{singleRequestData.request.method}</div>
-                  </h3>
-                </th>
-              </tr>
-              <tr>
-                <td>
-                  <div>{singleRequestData.request.url}</div>
-                </td>
-              </tr>
-            </table>
+          ) : (
+            <div
+              style={{
+                display: "flex",
+                flexDirection: "column",
+                gap: "20px",
+              }}
+            >
+              <div
+                className=""
+                style={{ display: "flex", flexDirection: "column" }}
+              >
+                <div style={{ display: "flex", gap: "100px" }}>
+                  <div>
+                    <span
+                      style={{
+                        fontWeight: "bold",
+                        marginRight: "25px",
+                      }}
+                    >
+                      METHOD:
+                    </span>
+                    {singleRequestData.request.method}
+                  </div>
 
-            {/*  */}
-            <div className="options">
-              <table className="table tableData">
-                <div className="HeadersP">
-                  <th>
-                    <h3 className="Headers">Headers</h3>
-                  </th>
-                  <div className="opt">
-                    {singleRequestData.headers.map((header) => {
-                      return (
-                        <div key={header._id}>
-                          <div>{header.key}</div>
-                          <div>{header.value}</div>
-                        </div>
-                      );
-                    })}
+                  <div style={{ flexGrow: 1 }}>
+                    <span
+                      style={{
+                        fontWeight: "bold",
+                        marginRight: "25px",
+                      }}
+                    >
+                      URL:
+                    </span>
+                    {singleRequestData.request.url}
                   </div>
                 </div>
-              </table>
-              {/* Do same for params */}
-              <table className="table tableData">
                 <div>
-                  <h3>Params</h3>
-                  <div className="opt">
-                    {singleRequestData.params.map((header) => {
-                      return (
-                        <tr>
-                          <div key={header._id}>
-                            <td>
-                              <div>{header.key}</div>
-                            </td>
-                            <div>{header.value}</div>
-                            <td></td>
-                          </div>
-                        </tr>
-                      );
-                    })}
-                  </div>
+                  <span
+                    style={{
+                      fontWeight: "bold",
+                      marginRight: "25px",
+                    }}
+                  >
+                    Description:
+                  </span>
+                  {singleRequestData.request.description}
                 </div>
-              </table>
+              </div>
 
-              {/* Body code */}
-              <table className=" table tableData">
-                <div className="bodyData ">
-                  <th>
-                    <h3 className="Body">Body</h3>
-                    <br></br>
-                  </th>
-                  <div className="opt">
-                    {singleRequestData.body ? (
-                      JSON.stringify(singleRequestData.body || null, null, 2)
-                    ) : (
-                      // <tr>
-                      <td>
-                        <div>No data in body </div>
-                      </td>
-                      // </tr>
-                    )}
+              {/*  */}
+              <div className="options">
+                <table className="table tableData">
+                  <div className="HeadersP">
+                    <th>
+                      <h3 className="Headers">Headers</h3>
+                    </th>
+                    <div className="opt">
+                      {singleRequestData.headers.map((header) => {
+                        return (
+                          <tr key={header._id}>
+                            <div
+                              style={{
+                                display: "flex",
+                                justifyContent: "space-between",
+                                flexDirection: "column",
+                                padding: "10px",
+                              }}
+                            >
+                              <div>
+                                <span
+                                  style={{
+                                    fontWeight: "bold",
+                                    marginRight: "25px",
+                                  }}
+                                >
+                                  Key:
+                                </span>
+                                <span>{header.key}</span>
+                              </div>
+                              <div>
+                                <span
+                                  style={{
+                                    fontWeight: "bold",
+                                    marginRight: "10px",
+                                  }}
+                                >
+                                  Value:
+                                </span>
+                                <span>{header.value}</span>
+                              </div>
+                            </div>
+                          </tr>
+                        );
+                      })}
+                    </div>
                   </div>
-                </div>
-              </table>
+                </table>
+                {/* Do same for params */}
+                <table className="table tableData">
+                  <div>
+                    <h3>Params</h3>
+                    <div className="opt">
+                      {singleRequestData.params.map((header) => {
+                        return (
+                          <tr key={header._id}>
+                            <div
+                              style={{
+                                display: "flex",
+                                justifyContent: "space-between",
+                                flexDirection: "column",
+                                padding: "10px",
+                              }}
+                            >
+                              <div>
+                                <span
+                                  style={{
+                                    fontWeight: "bold",
+                                    marginRight: "25px",
+                                  }}
+                                >
+                                  Key:
+                                </span>
+                                <span>{header.key}</span>
+                              </div>
+                              <div>
+                                <span
+                                  style={{
+                                    fontWeight: "bold",
+                                    marginRight: "10px",
+                                  }}
+                                >
+                                  Value:
+                                </span>
+                                <span>{header.value}</span>
+                              </div>
+                            </div>
+                          </tr>
+                        );
+                      })}
+                    </div>
+                  </div>
+                </table>
+
+                {/* Body code */}
+                <table className=" table tableData">
+                  <div className="bodyData ">
+                    <th>
+                      <h3 className="Body">Body</h3>
+                    </th>
+                    <div className="opt">
+                      {singleRequestData.body ? (
+                        JSON.stringify(singleRequestData.body || null, null, 2)
+                      ) : (
+                        // <tr>
+                        <td>
+                          <div>No data in body </div>
+                        </td>
+                        // </tr>
+                      )}
+                    </div>
+                  </div>
+                </table>
+              </div>
+              {/*  */}
             </div>
-            {/*  */}
-          </div>
-        )}
+          )}
+        </div>
       </div>
     </div>
   );

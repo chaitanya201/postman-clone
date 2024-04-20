@@ -133,7 +133,7 @@ router.get("/get", async (req, res) => {
         ...request._doc,
         headers: correctHeaders[0]?.headers || [],
         params: correctParams[0]?.params || [],
-        body: JSON.parse(correctBody[0]?.body || null) || null,
+        body: correctBody[0]?.body || null,
       };
     });
     return res.json({ status: true, data: finalResult });
