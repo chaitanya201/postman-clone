@@ -60,6 +60,24 @@ h3 {
   animation-iteration-count: 3;
   animation-delay: 0s;
 }
+
+.edit-btn {
+  /* paddingInline: "10px ",
+    cursor: "pointer",
+    border: "1px",
+    borderColor: "1px solid black",
+    pa */
+  padding: 16px;
+  margin-bottom: 10px;
+  cursor: pointer;
+  border: 1px solid rgb(189, 251, 251);
+  /* padding-top: 10px; */
+  border-radius: 10px;
+}
+.edit-btn:hover {
+  border: 1px solid rgb(76, 238, 238);
+}
+
 .table2 {
   /* display: flex; */
   /* position: fixed; */

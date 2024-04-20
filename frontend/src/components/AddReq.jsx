@@ -1,6 +1,8 @@
 import { useState } from "react";
 import Modal from "react-modal";
 import "../CSS/AddReq.css";
+import "../CSS/ShowRequests.css";
+
 import HomePage from "../pages/HomePage";
 // import { Link } from "react-router-dom";
 
@@ -15,7 +17,7 @@ export default function AddReq({ singleRequestData, title = "AddReq" }) {
     <div>
       <div className={singleRequestData ? "" : "buttons"}>
         <button
-          className={singleRequestData ? "" : "btn btn-primary  AddReq"}
+          className={singleRequestData ? "edit-btn" : "btn btn-primary  AddReq"}
           onClick={handleAddReq}
         >
           {title}

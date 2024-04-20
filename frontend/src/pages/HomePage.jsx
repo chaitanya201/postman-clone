@@ -77,7 +77,9 @@ export default function HomePage({ singleRequestData }) {
         setResponse([]);
         return;
       }
-      toast("Request added!!", { type: "success" });
+      toast(`Request ${singleRequestData ? "Updated" : "Added"}!!!`, {
+        type: "success",
+      });
       window.location.reload();
     } catch (error) {
       console.log("err..", error);

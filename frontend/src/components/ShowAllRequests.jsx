@@ -96,7 +96,9 @@ export default function ShowAllRequests() {
                       : req.title}
                   </button>
                   {!singleRequestData ? (
-                    <button>Edit</button>
+                    <div role="button" className="edit-btn">
+                      Edit
+                    </div>
                   ) : (
                     <AddReq
                       singleRequestData={singleRequestData}
