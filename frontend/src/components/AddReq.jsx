@@ -11,8 +11,6 @@ export default function AddReq({ singleRequestData, title = "AddReq" }) {
     setIsModalOpen(true);
   };
 
-  console.log("herer", title);
-
   return (
     <div>
       <div className={singleRequestData ? "" : "buttons"}>

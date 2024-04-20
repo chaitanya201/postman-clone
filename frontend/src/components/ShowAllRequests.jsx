@@ -95,8 +95,14 @@ export default function ShowAllRequests() {
                       ? req.title.slice(0, 16) + ".."
                       : req.title}
                   </button>
-
-                  <AddReq singleRequestData={singleRequestData} title="Edit" />
+                  {!singleRequestData ? (
+                    <button>Edit</button>
+                  ) : (
+                    <AddReq
+                      singleRequestData={singleRequestData}
+                      title="Edit"
+                    />
+                  )}
 
                   <button
                     className="deleteB"
@@ -181,15 +187,15 @@ export default function ShowAllRequests() {
 
               {/*  */}
               <div className="options">
-                <table className="table tableData">
+                <div className="table tableData">
                   <div className="HeadersP">
-                    <th>
+                    <div>
                       <h3 className="Headers">Headers</h3>
-                    </th>
+                    </div>
                     <div className="opt">
                       {singleRequestData.headers.map((header) => {
                         return (
-                          <tr key={header._id}>
+                          <div key={header._id}>
                             <div
                               style={{
                                 display: "flex",
@@ -221,20 +227,20 @@ export default function ShowAllRequests() {
                                 <span>{header.value}</span>
                               </div>
                             </div>
-                          </tr>
+                          </div>
                         );
                       })}
                     </div>
                   </div>
-                </table>
+                </div>
                 {/* Do same for params */}
-                <table className="table tableData">
+                <div className="table tableData">
                   <div>
                     <h3>Params</h3>
                     <div className="opt">
                       {singleRequestData.params.map((header) => {
                         return (
-                          <tr key={header._id}>
+                          <div key={header._id}>
                             <div
                               style={{
                                 display: "flex",
@@ -266,32 +272,32 @@ export default function ShowAllRequests() {
                                 <span>{header.value}</span>
                               </div>
                             </div>
-                          </tr>
+                          </div>
                         );
                       })}
                     </div>
                   </div>
-                </table>
+                </div>
 
                 {/* Body code */}
-                <table className=" table tableData">
+                <div className=" table tableData">
                   <div className="bodyData ">
-                    <th>
+                    <div>
                       <h3 className="Body">Body</h3>
-                    </th>
+                    </div>
                     <div className="opt">
                       {singleRequestData.body ? (
                         JSON.stringify(singleRequestData.body || null, null, 2)
                       ) : (
-                        // <tr>
-                        <td>
+                        // <div>
+                        <div>
                           <div>No data in body </div>
-                        </td>
-                        // </tr>
+                        </div>
+                        // </div>
                       )}
                     </div>
                   </div>
-                </table>
+                </div>
               </div>
               {/*  */}
             </div>
