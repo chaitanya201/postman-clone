@@ -301,13 +301,15 @@ router.post("/update", async (req, res) => {
           description: body.description,
           url: body.url,
           method: body.method,
-        }
+        },
+        { session }
       );
       const headers = await headerModel.findOneAndUpdate(
         { requestId: body._id },
         {
           headers: body.headers,
-        }
+        },
+        { session }
       );
       return { headers, request };
     });
@@ -325,9 +327,10 @@ router.post("/update", async (req, res) => {
 
 router.delete("/delete", async (req, res) => {
   try {
-    const body = req.body;
+    const body = req.query;
     const session = await mongoose.startSession();
-
+    console.log("id ", body._id);
+    console.log("body ", body);
     const sessionResult = await session.withTransaction(async () => {
       const request = await requestModel.deleteOne(
         {
@@ -335,8 +338,9 @@ router.delete("/delete", async (req, res) => {
         },
         { session }
       );
+      // console.log("request ", request);
 
-      if (request.deletedCount === 0 && request.acknowledged) {
+      if (!request.acknowledged) {
         return session.abortTransaction();
       }
 
@@ -347,7 +351,9 @@ router.delete("/delete", async (req, res) => {
         { session }
       );
 
-      if (headers.deletedCount === 0 && headers.acknowledged) {
+      // console.log("headers ", headers);
+
+      if (!headers.acknowledged) {
         return session.abortTransaction();
       }
 
@@ -355,6 +361,7 @@ router.delete("/delete", async (req, res) => {
     });
 
     await session.endSession();
+    // console.log("session result ", sessionResult);
     if (!sessionResult) {
       return res.json({
         status: false,
