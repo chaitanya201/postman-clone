@@ -95,14 +95,8 @@ export default function ShowAllRequests() {
                       ? req.title.slice(0, 16) + ".."
                       : req.title}
                   </button>
-                  <button
-                    className="edit"
-                    onClick={() => {
-                      handleEdit(req);
-                    }}
-                  >
-                    Edit
-                  </button>
+
+                  <AddReq singleRequestData={singleRequestData} title="Edit" />
 
                   <button
                     className="deleteB"

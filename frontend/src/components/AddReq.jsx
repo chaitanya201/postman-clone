@@ -4,24 +4,23 @@ import "../CSS/AddReq.css";
 import HomePage from "../pages/HomePage";
 // import { Link } from "react-router-dom";
 
-export default function AddReq() {
+export default function AddReq({ singleRequestData, title = "AddReq" }) {
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [inputValue, setInputValue] = useState("");
 
   const handleAddReq = () => {
     setIsModalOpen(true);
   };
 
-  const handleSubmit = () => {
-    console.log("Submitted value:", inputValue);
-    setIsModalOpen(false);
-  };
+  console.log("herer", title);
 
   return (
     <div>
-      <div className="buttons">
-        <button className="btn btn-primary  AddReq" onClick={handleAddReq}>
-          AddReq
+      <div className={singleRequestData ? "" : "buttons"}>
+        <button
+          className={singleRequestData ? "" : "btn btn-primary  AddReq"}
+          onClick={handleAddReq}
+        >
+          {title}
         </button>
       </div>
       {/* <div className="modal"> */}
@@ -31,7 +30,7 @@ export default function AddReq() {
         contentLabel="Input Modal"
         className="modal"
       >
-        <HomePage />
+        <HomePage singleRequestData={singleRequestData} />
         {/* <div className="inputData">
           <div className="title1">Enter Information</div>
           <input

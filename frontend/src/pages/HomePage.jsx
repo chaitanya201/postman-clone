@@ -4,24 +4,24 @@ import axios from "axios";
 import ShowResponse from "../components/ShowResponse";
 import Body from "../components/Body";
 import { BASE_URL, safeParse } from "../utils";
-import { Link } from "react-router-dom";
 import HeadersAndParams from "../components/HeadersAndParams";
 import "../CSS/HomePage.css";
-import AddReq from "../components/AddReq";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
-export default function HomePage() {
+export default function HomePage({ singleRequestData }) {
   const [selected, setSelected] = useState({
-    method: "get",
-    url: "",
-    headers: [],
-    params: [],
-    body: "",
-    title: "",
-    description: "",
+    method: singleRequestData?.request?.method?.toLowerCase() || "get",
+    url: singleRequestData?.request?.url || "",
+    headers: singleRequestData?.headers || [],
+    params: singleRequestData?.params || [],
+    body: singleRequestData?.body || "",
+    title: singleRequestData?.request?.title || "",
+    description: singleRequestData?.request?.description || "",
   });
-  const [response, setResponse] = useState(null);
+  const [response, setResponse] = useState(
+    singleRequestData?.request?.method || null
+  );
   const [currentSelectedOption, setCurrentSelectedOption] = useState({
     option: "headers",
     component: HeadersAndParams,
@@ -67,7 +67,11 @@ export default function HomePage() {
 
   const handleSaveReq = async () => {
     try {
-      const res = await axios.post(`${BASE_URL}/add`, { ...selected });
+      const url = `${BASE_URL}/${singleRequestData ? "update" : "add"}`;
+      if (singleRequestData) {
+        selected._id = singleRequestData.request._id;
+      }
+      const res = await axios.post(url, { ...selected });
       if (!res.data.status) {
         toast.error("Something went wrong..");
         setResponse([]);
@@ -91,7 +95,7 @@ export default function HomePage() {
         </div> */}
         <div className="save">
           <button className="saveReqBtn" onClick={handleSaveReq}>
-            Save Request
+            {singleRequestData ? "Update" : "Save"} Request
           </button>
         </div>
         {/* <div>

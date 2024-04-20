@@ -42,7 +42,8 @@ h3 {
 }
 .title {
   /* background-color: yellow; */
-  width: 100px;
+  width: 200px;
+  text-align: start;
 }
 .tableData {
   border: 5px solid antiquewhite;
