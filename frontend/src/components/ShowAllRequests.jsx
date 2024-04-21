@@ -300,6 +300,27 @@ export default function ShowAllRequests() {
                     </div>
                   </div>
                 </div>
+
+                {/*  */}
+                <div className=" table tableData">
+                  <div className="bodyData ">
+                    <div>
+                      <h3 className="Body">Body</h3>
+                    </div>
+                    <div className="opt">
+                      {singleRequestData.body ? (
+                        JSON.stringify(singleRequestData.body || null, null, 2)
+                      ) : (
+                        // <div>
+                        <div>
+                          <div>No data in body </div>
+                        </div>
+                        // </div>
+                      )}
+                    </div>
+                  </div>
+                </div>
+                {/*  */}
               </div>
               {/*  */}
             </div>

@@ -3,7 +3,7 @@ import "../CSS/ShowResponse.css";
 export default function ShowResponse({ response }) {
   const [selectedOption, setSelectedOption] = useState("data");
   return response && response.data ? (
-    <div>
+    <div style={{ color: "white" }}>
       <ul className="list">
         <button
           onClick={() => {
@@ -33,7 +33,7 @@ export default function ShowResponse({ response }) {
       {selectedOption === "headers" && (
         <div>{JSON.stringify(response.headers, null, 2)}</div>
       )}
-      {selectedOption === "cookies" && <div>Add cookies</div>}
+      {selectedOption === "cookies" && <div>No Cookies Found</div>}
     </div>
   ) : (
     <div className="noData">No data</div>

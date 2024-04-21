@@ -37,9 +37,9 @@ h3 {
   margin: 7px;
   /* background-color: gray; */
 }
-.reqData {
-  /* background-color: red; */
-}
+/* .reqData {
+  background-color: red;
+} */
 .title {
   /* background-color: yellow; */
   width: 200px;
@@ -78,7 +78,7 @@ h3 {
   border: 1px solid rgb(76, 238, 238);
 }
 
-.table2 {
+/*.table2 {
   /* display: flex; */
   /* position: fixed; */
   /* justify-content: space-between;
@@ -90,9 +90,7 @@ h3 {
     grid-template-columns: repeat(2,1fr); */
   /* margin-top: -150px;
     margin-left: 550px; */
-  /* align-content: center; */
-}
-
+  /* align-content: center; }*/
 .options {
   animation-name: rightMovement;
   animation-duration: 3s;

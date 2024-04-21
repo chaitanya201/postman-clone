@@ -50,7 +50,8 @@ input{
  font-size: large;
  border-radius: 15px;
  border-color: rgba(0, 0, 0, 0.263);
- text-transform: uppercase;
+ text-transform: capitalize;
+ /* text-transform: uppercase; */
  padding-left: 15px;
 
 }

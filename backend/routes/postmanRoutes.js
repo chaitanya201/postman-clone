@@ -63,7 +63,8 @@ router.get("/get", async (req, res) => {
         data: {
           headers: correctHeaders[0]?.headers || [],
           params: correctParams[0]?.params || [],
-          body: JSON.parse(correctBody[0]?.body || null) || null,
+          body: correctBody[0]?.body || null,
+          // body: JSON.parse(correctBody[0]?.body || null) || null,
           request: request._doc,
         },
       });
